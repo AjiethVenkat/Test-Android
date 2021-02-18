@@ -10,4 +10,5 @@ public class ChatLogMessageModel
     public String avatarUrl;
     public String username;
     public String message;
+
 }

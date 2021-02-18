@@ -7,11 +7,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
+
+import com.android.volley.toolbox.Volley;
 import com.datechnologies.androidtest.MainActivity;
 import com.datechnologies.androidtest.R;
 import com.datechnologies.androidtest.api.ChatLogMessageModel;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +40,10 @@ public class ChatActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private ChatAdapter chatAdapter;
+
+    private final String JSON_URL = "http://dev.rapptrlabs.com/Tests/scripts/chat_log.php";
+    private RequestQueue requestQueue;
+
 
     //==============================================================================================
     // Static Class Methods
@@ -45,6 +63,9 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        setTitle("Chat");
+        requestQueue = Volley.newRequestQueue(this);
+
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
         ActionBar actionBar = getSupportActionBar();
@@ -61,21 +82,53 @@ public class ChatActivity extends AppCompatActivity {
                 LinearLayoutManager.VERTICAL,
                 false));
 
-        List<ChatLogMessageModel> tempList = new ArrayList<>();
 
-        ChatLogMessageModel chatLogMessageModel = new ChatLogMessageModel();
-        chatLogMessageModel.message = "This is test data. Please retrieve real data.";
+        StringRequest request = new StringRequest(Request.Method.GET, JSON_URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                List<ChatLogMessageModel> tempList = new ArrayList<>();
 
-        tempList.add(chatLogMessageModel);
-        tempList.add(chatLogMessageModel);
-        tempList.add(chatLogMessageModel);
-        tempList.add(chatLogMessageModel);
-        tempList.add(chatLogMessageModel);
-        tempList.add(chatLogMessageModel);
-        tempList.add(chatLogMessageModel);
-        tempList.add(chatLogMessageModel);
+                try {
+                    JSONObject json_Object = new JSONObject(response);
+                    JSONArray user_ArrayObject = json_Object.getJSONArray("data");
+                    for (int i = 0; i < user_ArrayObject.length(); i++) {
+                        JSONObject single_User_Object = user_ArrayObject.getJSONObject(i);
+//                        String a = single_User_Object.getString("name");
+//                        Log.d("This is name: ", a);
 
-        chatAdapter.setChatLogMessageModelList(tempList);
+                        ChatLogMessageModel chatLogMessageModel = new ChatLogMessageModel();
+                        chatLogMessageModel.message = single_User_Object.getString("message");
+                        chatLogMessageModel.username = single_User_Object.getString("name");
+                        chatLogMessageModel.avatarUrl = single_User_Object.getString("avatar_url");
+                        tempList.add(chatLogMessageModel);
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                chatAdapter.setChatLogMessageModelList(tempList);
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        requestQueue = Volley.newRequestQueue(ChatActivity.this);
+        requestQueue.add(request);
+
+//        chatLogMessageModel.message = "This is test data. Please retrieve real data.";
+
+//        tempList.add(chatLogMessageModel);
+//        tempList.add(chatLogMessageModel);
+//        tempList.add(chatLogMessageModel);
+//        tempList.add(chatLogMessageModel);
+//        tempList.add(chatLogMessageModel);
+//        tempList.add(chatLogMessageModel);
+//        tempList.add(chatLogMessageModel);
+
 
         // TODO: Make the UI look like it does in the mock-up. Allow for horizontal screen rotation.
 
@@ -89,4 +142,5 @@ public class ChatActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+
 }
