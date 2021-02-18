@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-    android:layout_marginRight="@dimen/activity_horizontal_margin"
+    android:background="@drawable/gpc_background"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -15,24 +14,55 @@
 
         <Button
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="55dp"
+            android:layout_marginTop="214dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:textAlignment="viewStart"
+            android:drawablePadding="16dp"
+            android:drawableStart="@drawable/ic_chat"
+            android:paddingLeft="22dp"
+            android:background="@drawable/ic_homebuttonstyle"
             android:onClick="onChatClicked"
+            android:textColor="#1B1E1F"
+            android:alpha="0.8"
             android:text="@string/chat_button"
-            android:textSize="@dimen/button_text_size" />
+            android:textSize="16sp" />
 
         <Button
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="55dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:textAlignment="viewStart"
+            android:drawablePadding="16dp"
+            android:drawableStart="@drawable/ic_lock"
+            android:paddingLeft="22dp"
+            android:background="@drawable/ic_homebuttonstyle"
             android:onClick="onLoginClicked"
+            android:textColor="#1B1E1F"
+            android:alpha="0.8"
             android:text="@string/login_button"
-            android:textSize="@dimen/button_text_size" />
+            android:textSize="16sp" />
 
         <Button
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="55dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="213dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:textAlignment="viewStart"
+            android:drawablePadding="16dp"
+            android:drawableStart="@drawable/ic_animation"
+            android:paddingLeft="22dp"
+            android:background="@drawable/ic_homebuttonstyle"
             android:onClick="onAnimationClicked"
+            android:textColor="#1B1E1F"
+            android:alpha="0.8"
             android:text="@string/animation_button"
-            android:textSize="@dimen/button_text_size" />
+            android:textSize="16sp" />
 
     </LinearLayout>
 
