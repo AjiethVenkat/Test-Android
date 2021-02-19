@@ -3,13 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:color="@color/colorAccent"
     tools:targetApi="lollipop">
-    xmlns:tools="http://schemas.android.com/tools"
-    android:color="@color/colorAccent">
     <item android:state_pressed="true">
         <shape android:shape="rectangle"
-            tools:ignore="ExtraText">
             android:id="@android:id/mask"
-            android:drawable="@android:color/white" />
+            android:drawable="@android:color/white" >
         </shape>
     </item>
     <item android:state_pressed="false">
