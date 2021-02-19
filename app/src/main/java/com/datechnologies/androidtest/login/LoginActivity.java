@@ -10,7 +10,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -26,6 +30,7 @@ import com.datechnologies.androidtest.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -79,22 +84,27 @@ public class LoginActivity extends AppCompatActivity {
         // TODO: so please use those to test the login.
 
 
-        final String email = "info@datechnologies.co";
-        final String password = "Test123";
+        // final String email = "info@datechnologies.co";
+        // final String password = "Test123";
 
         final String postUrl = "http://dev.rapptrlabs.com/Tests/scripts/login.php";
         final RequestQueue requestQueue = Volley.newRequestQueue(this);
-
 
         //==============================================================================================
         // Send Post request to the given url and displaying the response in alertbox
         //==============================================================================================
 
-        Button button = (Button) findViewById(R.id.button);
+        final Button button = (Button) findViewById(R.id.button);
+        final EditText email = (EditText) findViewById(R.id.email);
+        final EditText password  = (EditText) findViewById(R.id.password);
+
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                final long tStart = System.currentTimeMillis();
+
                 StringRequest jsonObjRequest = new StringRequest(Request.Method.POST,
                         postUrl,
                         new Response.Listener<String>() {
@@ -107,7 +117,13 @@ public class LoginActivity extends AppCompatActivity {
 
                                 alertDialog.setTitle("Success");
 
-                                alertDialog.setMessage(response.toString());
+                                /* Time taken for the API repsonse */
+                                long tEnd = System.currentTimeMillis();
+                                long tDelta = tEnd - tStart;
+                                double elapsedSeconds = tDelta / 1000.0;
+                                String elapsedTime = String.valueOf(elapsedSeconds);
+
+                                alertDialog.setMessage("Time Elapsed for API Call:" + elapsedTime + " Message " + response.toString());
 
                                 alertDialog.setPositiveButton("yes", new DialogInterface.OnClickListener() {
                                     @Override
@@ -133,7 +149,13 @@ public class LoginActivity extends AppCompatActivity {
 
                         alertDialog.setTitle("Failure");
 
-                        alertDialog.setMessage(error.getMessage());
+                        /* Time taken for the API repsonse */
+                        long tEnd = System.currentTimeMillis();
+                        long tDelta = tEnd - tStart;
+                        double elapsedSeconds = tDelta / 1000.0;
+                        String elapsedTime = String.valueOf(elapsedSeconds);
+
+                        alertDialog.setMessage("Time Elapsed for API Call:" + elapsedTime + " Message " + error.getMessage());
 
                         alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
@@ -154,8 +176,8 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     protected Map<String, String> getParams() throws AuthFailureError {
                         Map<String, String> params = new HashMap<String, String>();
-                        params.put("email", email);
-                        params.put("password", password);
+                        params.put("email", email.getText().toString());
+                        params.put("password", password.getText().toString());
                         return params;
                     }
                 };
