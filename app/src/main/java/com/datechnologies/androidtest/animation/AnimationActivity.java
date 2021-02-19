@@ -2,15 +2,13 @@ package com.datechnologies.androidtest.animation;
 
 import android.annotation.SuppressLint;
 import android.content.ClipData;
-import android.content.ClipDescription;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.DragEvent;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,7 +16,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import com.datechnologies.androidtest.MainActivity;
 import com.datechnologies.androidtest.R;
@@ -37,6 +34,8 @@ public class AnimationActivity extends AppCompatActivity {
     //==============================================================================================
 
     ImageView image;
+    private GestureDetectorCompat mDetector;
+
     //==============================================================================================
     // Static Class Methods
     //==============================================================================================
@@ -79,8 +78,9 @@ public class AnimationActivity extends AppCompatActivity {
         final RippleBackground rippleBackground = (RippleBackground) findViewById(R.id.content);
         final MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.faded);
 
+
         /* Start ripple animation */
-        rippleBackground.startRippleAnimation();
+        //rippleBackground.startRippleAnimation();
 
         image.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -97,6 +97,8 @@ public class AnimationActivity extends AppCompatActivity {
 
                     /* Stop ripple animation */
                     rippleBackground.stopRippleAnimation();
+
+                    mediaPlayer.stop();
 
                     return true;
 
@@ -126,7 +128,12 @@ public class AnimationActivity extends AppCompatActivity {
                 mediaPlayer.start();
             }
         });
+
+
     }
+
+
+
 
     /* Call back the stack on AppBar back button */
     @Override
@@ -134,8 +141,8 @@ public class AnimationActivity extends AppCompatActivity {
         switch (item.getItemId()) {
 
             case android.R.id.home:
-                onBackPressed();
 
+                onBackPressed();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -143,7 +150,9 @@ public class AnimationActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+
 }
