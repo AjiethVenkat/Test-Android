@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.view.MenuItem;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -25,7 +25,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,8 +48,7 @@ public class ChatActivity extends AppCompatActivity {
     // Static Class Methods
     //==============================================================================================
 
-    public static void start(Context context)
-    {
+    public static void start(Context context) {
         Intent starter = new Intent(context, ChatActivity.class);
         context.startActivity(starter);
     }
@@ -83,29 +81,37 @@ public class ChatActivity extends AppCompatActivity {
                 false));
 
 
+        //==============================================================================================
+        // JSON get method to retrieve chat data using volley
+        //==============================================================================================
+
         StringRequest request = new StringRequest(Request.Method.GET, JSON_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 List<ChatLogMessageModel> tempList = new ArrayList<>();
 
                 try {
+                    /* The JSON response is treated as object */
                     JSONObject json_Object = new JSONObject(response);
                     JSONArray user_ArrayObject = json_Object.getJSONArray("data");
+
                     for (int i = 0; i < user_ArrayObject.length(); i++) {
                         JSONObject single_User_Object = user_ArrayObject.getJSONObject(i);
-//                        String a = single_User_Object.getString("name");
-//                        Log.d("This is name: ", a);
 
                         ChatLogMessageModel chatLogMessageModel = new ChatLogMessageModel();
+
+                        /* Did not retrieve id from JSON since it was not required */
                         chatLogMessageModel.message = single_User_Object.getString("message");
                         chatLogMessageModel.username = single_User_Object.getString("name");
                         chatLogMessageModel.avatarUrl = single_User_Object.getString("avatar_url");
+
                         tempList.add(chatLogMessageModel);
 
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                /* Sending the data to adapter to populate each cell */
                 chatAdapter.setChatLogMessageModelList(tempList);
 
             }
@@ -136,9 +142,21 @@ public class ChatActivity extends AppCompatActivity {
         // TODO: Parse this chat data from JSON into ChatLogMessageModel and display it.
     }
 
+    /* Call back the stack on AppBar back button */
     @Override
-    public void onBackPressed()
-    {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case android.R.id.home:
+                onBackPressed();
+
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }

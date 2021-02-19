@@ -10,7 +10,6 @@ import com.datechnologies.androidtest.login.LoginActivity;
 
 /**
  * The main screen that lets you navigate to all other screens in the app.
- *
  */
 
 public class MainActivity extends AppCompatActivity {
@@ -20,7 +19,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setTitle(R.string.activity_main_title);
         setContentView(R.layout.activity_main);
-
 
 
         /**
@@ -49,18 +47,15 @@ public class MainActivity extends AppCompatActivity {
     // Button Click Methods
     //==============================================================================================
 
-    public void onChatClicked(View v)
-    {
+    public void onChatClicked(View v) {
         ChatActivity.start(this);
     }
 
-    public void onLoginClicked(View v)
-    {
+    public void onLoginClicked(View v) {
         LoginActivity.start(this);
     }
 
-    public void onAnimationClicked(View v)
-    {
+    public void onAnimationClicked(View v) {
         AnimationActivity.start(this);
     }
 }

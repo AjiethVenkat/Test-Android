@@ -7,6 +7,10 @@ import android.os.Bundle;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
+    //==============================================================================================
+    // Handler for the splash screen by runnable thread
+    //==============================================================================================
+
     private Handler handler = new Handler();
 
     @Override
@@ -18,7 +22,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            if(!isFinishing()){
+            if (!isFinishing()) {
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 finish();
             }
@@ -28,7 +32,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        handler.postDelayed(runnable,1000);
+        handler.postDelayed(runnable, 1000);
     }
 
     @Override

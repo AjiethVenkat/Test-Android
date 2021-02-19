@@ -28,7 +28,7 @@ import com.skyfishjy.library.RippleBackground;
 /**
  * Screen that displays the D & A Technologies logo.
  * The icon can be moved around on the screen as well as animated.
- * */
+ */
 
 public class AnimationActivity extends AppCompatActivity {
 
@@ -36,12 +36,12 @@ public class AnimationActivity extends AppCompatActivity {
     // Class Properties
     //==============================================================================================
 
+    ImageView image;
     //==============================================================================================
     // Static Class Methods
     //==============================================================================================
 
-    public static void start(Context context)
-    {
+    public static void start(Context context) {
         Intent starter = new Intent(context, AnimationActivity.class);
         context.startActivity(starter);
     }
@@ -50,13 +50,12 @@ public class AnimationActivity extends AppCompatActivity {
     // Lifecycle Methods
     //==============================================================================================
 
-    ImageView img;
-
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_animation);
+        setTitle("Animation");
 
         ActionBar actionBar = getSupportActionBar();
 
@@ -74,54 +73,76 @@ public class AnimationActivity extends AppCompatActivity {
 
         // TODO: Add a bonus to make yourself stick out. Music, color, fireworks, explosions!!!
 
-        img = (ImageView) findViewById(R.id.imageView);
-        final RippleBackground rippleBackground = (RippleBackground)findViewById(R.id.content);
+        image = (ImageView) findViewById(R.id.imageView);
+
+        /* Final variable for Ripple Background and Music with MediaPlayer */
+        final RippleBackground rippleBackground = (RippleBackground) findViewById(R.id.content);
         final MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.faded);
 
+        /* Start ripple animation */
         rippleBackground.startRippleAnimation();
 
-        img.setOnTouchListener(new View.OnTouchListener() {
+        image.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    ClipData data = ClipData.newPlainText("", "");
-                    View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(img);
 
-                    img.startDrag(data, shadowBuilder, img, 0);
-                    img.setVisibility(View.VISIBLE);
+                    ClipData data = ClipData.newPlainText("", "");
+
+                    View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(image);
+                    image.startDrag(data, shadowBuilder, image, 0);
+
+                    /* Visibility of the image View */
+                    image.setVisibility(View.VISIBLE);
+
+                    /* Stop ripple animation */
                     rippleBackground.stopRippleAnimation();
+
                     return true;
+
                 } else {
+
                     return false;
+
                 }
             }
         });
 
+        /* FadeIn button Onclick listener */
         Button fadeButton = (Button) findViewById(R.id.buttonFade);
+
         fadeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Animation animfade = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.ic_fade_effect);
-                img.startAnimation(animfade);
+
+                image.startAnimation(animfade);
+
+                /* Start ripple animation */
                 rippleBackground.startRippleAnimation();
+
+                /* Music start playing - Alan Walker (faded) */
                 mediaPlayer.start();
             }
         });
     }
 
+    /* Call back the stack on AppBar back button */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+
             case android.R.id.home:
                 onBackPressed();
+
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }

@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -31,7 +32,6 @@ import java.util.Map;
 
 /**
  * A screen that displays a login prompt, allowing the user to login to the D & A Technologies Web Server.
- *
  */
 public class LoginActivity extends AppCompatActivity {
 
@@ -39,8 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     // Static Class Methods
     //==============================================================================================
 
-    public static void start(Context context)
-    {
+    public static void start(Context context) {
         Intent starter = new Intent(context, LoginActivity.class);
         context.startActivity(starter);
     }
@@ -55,6 +54,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         final ActionBar actionBar = getSupportActionBar();
+
+        setTitle("Login");
 
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -78,14 +79,19 @@ public class LoginActivity extends AppCompatActivity {
         // TODO: so please use those to test the login.
 
 
-        final String  email = "info@datechnologies.co";
+        final String email = "info@datechnologies.co";
         final String password = "Test123";
 
         final String postUrl = "http://dev.rapptrlabs.com/Tests/scripts/login.php";
         final RequestQueue requestQueue = Volley.newRequestQueue(this);
 
 
+        //==============================================================================================
+        // Send Post request to the given url and displaying the response in alertbox
+        //==============================================================================================
+
         Button button = (Button) findViewById(R.id.button);
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -94,19 +100,22 @@ public class LoginActivity extends AppCompatActivity {
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(final String response) {
-                                Log.i("LoginActivity.this", response);
+                                Log.d("LoginActivity.this", response);
 
+                                /* Alertdialog when the response is successful */
                                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(LoginActivity.this);
 
                                 alertDialog.setTitle("Success");
 
-                                alertDialog.setMessage(response);
+                                alertDialog.setMessage(response.toString());
 
                                 alertDialog.setPositiveButton("yes", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
+
                                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                         startActivity(intent);
+
                                     }
                                 });
 
@@ -118,6 +127,22 @@ public class LoginActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         VolleyLog.d("volley", "Error: " + error.getMessage());
                         error.printStackTrace();
+
+                        /* Alertdialog when the response fails */
+                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(LoginActivity.this);
+
+                        alertDialog.setTitle("Failure");
+
+                        alertDialog.setMessage(error.getMessage());
+
+                        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                /* Nothing done just retry email and password*/
+                            }
+                        });
+
+                        alertDialog.show();
                     }
                 }) {
 
@@ -129,26 +154,33 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     protected Map<String, String> getParams() throws AuthFailureError {
                         Map<String, String> params = new HashMap<String, String>();
-                        params.put("email",email);
-                        params.put("password",password);
+                        params.put("email", email);
+                        params.put("password", password);
                         return params;
                     }
-
                 };
 
                 requestQueue.add(jsonObjRequest);
 
             }
         });
+    }
 
+    /* Call back the stack on AppBar back button */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
 
+            case android.R.id.home:
+                onBackPressed();
 
-
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }

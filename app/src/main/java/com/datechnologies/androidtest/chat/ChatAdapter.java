@@ -23,7 +23,6 @@ import java.util.List;
 
 /**
  * A recycler view adapter used to display chat log messages in {@link ChatActivity}.
-
  */
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
     //==============================================================================================
@@ -69,6 +68,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         viewHolder.messageTextView.setText(chatLogMessageModel.message);
         viewHolder.nameView.setText(chatLogMessageModel.username);
 
+        /* Getting images from avatar_url using Picasso*/
         Picasso.get().load(chatLogMessageModel.avatarUrl).transform(new CircleTransform()).into(viewHolder.avatarImageView);
 
     }
@@ -97,6 +97,11 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     }
 
 
+    //==============================================================================================
+    // Transform of the images to circle view
+    // Reference : https://stackoverflow.com/questions/26112150/android-create-circular-image-with-picasso
+    //==============================================================================================
+
     public class CircleTransform implements Transformation {
         @Override
         public Bitmap transform(Bitmap source) {
@@ -123,7 +128,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
             canvas.drawCircle(r, r, r, paint);
 
             squaredBitmap.recycle();
-            return bitmap;        }
+            return bitmap;
+        }
 
         @Override
         public String key() {

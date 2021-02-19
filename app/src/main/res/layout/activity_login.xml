@@ -10,12 +10,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="269dp"
-        android:background="#FFFFFF"
-        android:alpha="0.9"
-        android:backgroundTint="@android:color/transparent"
         android:layout_marginTop="16dp"
-        android:orientation="vertical"
-       >
+        android:alpha="0.5"
+        android:background="#FFFFFF"
+        android:orientation="vertical">
 
         <EditText
 
@@ -25,11 +23,12 @@
             android:layout_marginLeft="30dp"
             android:layout_marginTop="24dp"
             android:layout_marginRight="30dp"
+            android:background="@drawable/ic_login_border"
             android:hint="Email"
+            android:textStyle="bold"
             android:inputType="textEmailAddress"
             android:textColor="#1B1E1F"
-            android:textSize="16sp"
-            android:background="@drawable/ic_login_border" />
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/password"
@@ -38,12 +37,12 @@
             android:layout_marginLeft="30dp"
             android:layout_marginTop="16dp"
             android:layout_marginRight="30dp"
-            android:textColor="#1B1E1F"
+            android:background="@drawable/ic_login_border"
             android:hint="Password"
+            android:textStyle="bold"
             android:inputType="textPassword"
-            android:textColorHint="#5F6063"
-            android:textSize="16sp"
-            android:background="@drawable/ic_login_border" />
+            android:textColor="#1B1E1F"
+            android:textSize="16sp" />
     </LinearLayout>
 
     <Button
@@ -51,13 +50,13 @@
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:layout_marginStart="25dp"
-        android:layout_marginEnd="26dp"
         android:layout_marginTop="190dp"
+        android:layout_marginEnd="26dp"
+        android:background="#0E5C89"
+        android:drawable="@drawable/ic_button"
         android:text="LOGIN"
         android:textColor="#FFFFFF"
-        android:textSize="16sp"
-        android:drawable="@drawable/ic_ripple_effect"
-        android:background="#0E5C89"/>
+        android:textSize="16sp" />
 
 
 </RelativeLayout>
